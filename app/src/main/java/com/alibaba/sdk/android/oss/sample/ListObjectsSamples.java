@@ -33,8 +33,8 @@ public class ListObjectsSamples {
             public void onSuccess(ListObjectsRequest request, ListObjectsResult result) {
                 Log.d("AyncListObjects", "Success!");
                 for (int i = 0; i < result.getObjectSummaries().size(); i++) {
-                    Log.d("AyncListObjects", "object: " + result.getObjectSummaries().get(i).getKey() + " "
-                            + result.getObjectSummaries().get(i).getETag() + " "
+                    Log.d("AyncListObjects", "object: " + result.getObjectSummaries().get(i).getKey() + "\n"
+                            + result.getObjectSummaries().get(i).getETag() + "\n"
                             + result.getObjectSummaries().get(i).getLastModified());
                 }
             }

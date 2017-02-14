@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
     private OSS oss;
 
     // 运行sample前需要配置以下字段为有效的值
-    private static final String endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
-    private static final String accessKeyId = "**************";
-    private static final String accessKeySecret = "*******************";
+    private static final String endpoint = "oss-cn-shanghai.aliyuncs.com";
+    private static final String accessKeyId = "LTAIdJcQW6Uap6cL";
+    private static final String accessKeySecret = "ssnJED1Ro4inSpE2NF71bGZD6IEbN1";
     private static final String uploadFilePath = "<upload_file_path>";
 
-    private static final String testBucket = "<bucket_name>";
-    private static final String uploadObject = "sampleObject";
+    private static final String testBucket = "zuoqin-photoes";
+    private static final String uploadObject = "照片1.png";
     private static final String downloadObject = "sampleObject";
 
     @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        new ListObjectsSamples(oss, testBucket).asyncListObjectsWithPrefix();
+                        new ListObjectsSamples(oss, testBucket).AyncListObjects();
                     }
                 }).start();
             }
