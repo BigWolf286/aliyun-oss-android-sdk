@@ -1,5 +1,6 @@
 package com.alibaba.sdk.android.oss.sample;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientException;
@@ -9,6 +10,13 @@ import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.ListObjectsRequest;
 import com.alibaba.sdk.android.oss.model.ListObjectsResult;
+import com.alibaba.sdk.android.oss.model.OSSObjectSummary;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by zhouzhuo on 12/3/15.
@@ -17,25 +25,44 @@ public class ListObjectsSamples {
 
     private OSS oss;
     private String testBucket;
+    public List<OSSObjectSummary> objects = new ArrayList<OSSObjectSummary>();
 
-    public ListObjectsSamples(OSS client, String testBucket) {
+    private static ListObjectsSamples instance = null;
+
+    public static ListObjectsSamples getInstance(){
+        if (instance == null){
+            instance = new ListObjectsSamples();
+        }
+        return instance;
+    }
+
+    public ListObjectsSamples(){
+
+    }
+
+    public void setOSS(OSS client, String testBucket) {
         this.oss = client;
         this.testBucket = testBucket;
     }
 
     // 异步罗列Bucket中文件
     public void AyncListObjects() {
+        if (oss == null || testBucket == null){
+            return;
+        }
         // 创建罗列请求
         ListObjectsRequest listObjects = new ListObjectsRequest(testBucket);
         // 设置成功、失败回调，发送异步罗列请求
         OSSAsyncTask task = oss.asyncListObjects(listObjects, new OSSCompletedCallback<ListObjectsRequest, ListObjectsResult>() {
             @Override
             public void onSuccess(ListObjectsRequest request, ListObjectsResult result) {
+                objects.clear();
                 Log.d("AyncListObjects", "Success!");
                 for (int i = 0; i < result.getObjectSummaries().size(); i++) {
-                    Log.d("AyncListObjects", "object: " + result.getObjectSummaries().get(i).getKey() + "\n"
-                            + result.getObjectSummaries().get(i).getETag() + "\n"
-                            + result.getObjectSummaries().get(i).getLastModified());
+//                    Log.d("AyncListObjects", "object: " + result.getObjectSummaries().get(i).getKey() + "\n"
+//                            + result.getObjectSummaries().get(i).getETag() + "\n"
+//                            + result.getObjectSummaries().get(i).getLastModified());
+                    objects.add(i,result.getObjectSummaries().get(i));
                 }
             }
 
@@ -91,6 +118,9 @@ public class ListObjectsSamples {
 
     // 异步下载指定前缀文件
     public void asyncListObjectsWithPrefix() {
+        if (oss == null || testBucket == null){
+            return;
+        }
         ListObjectsRequest listObjects = new ListObjectsRequest(testBucket);
         // 设定前缀
         listObjects.setPrefix("file");
@@ -125,4 +155,6 @@ public class ListObjectsSamples {
         });
         task.waitUntilFinished();
     }
+
+
 }

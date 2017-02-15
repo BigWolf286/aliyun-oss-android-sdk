@@ -1,5 +1,6 @@
 package com.alibaba.sdk.android.oss.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -87,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        new ListObjectsSamples(oss, testBucket).AyncListObjects();
+                        ListObjectsSamples.getInstance().setOSS(oss, testBucket);
+                        ListObjectsSamples.getInstance().AyncListObjects();
+                        Intent intent = new Intent(MainActivity.this,ListObjectActivity.class);
+                        MainActivity.this.startActivity(intent);
+//                        new ListObjectsSamples(oss, testBucket).AyncListObjects();
                     }
                 }).start();
             }
